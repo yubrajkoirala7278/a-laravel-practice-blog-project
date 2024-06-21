@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Blogs\Http\Controllers;
+namespace Modules\Blogs\Http\Controllers\admin;
 
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use Illuminate\Contracts\Support\Renderable;
@@ -25,7 +25,7 @@ class BlogsController extends Controller
     {
         try {
             if ($request->ajax()) {
-                $blogs = $this->blogRepository->fetchService();
+                $blogs = $this->blogRepository->fetchService($request);
                 return DataTables::of($blogs)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {

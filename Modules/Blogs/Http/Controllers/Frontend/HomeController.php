@@ -1,20 +1,37 @@
 <?php
 
-namespace Modules\Blogs\Http\Controllers;
+namespace Modules\Blogs\Http\Controllers\Frontend;
 
+use App\Repositories\Interfaces\BlogRepositoryInterface;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Blogs\Entities\Blog;
 
 class HomeController extends Controller
 {
+    private $blogRepository;
+    public function __construct(BlogRepositoryInterface $blogRepository)
+    {
+        $this->blogRepository = $blogRepository;
+    }
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('blogs::admin.home.index');
+        
+        try {
+            if($request->ajax()){
+                $blogs=$this->blogRepository->fetchService($request,5);
+                return response()->json($blogs);
+            }
+            return view('blogs::public.home.index');
+
+        } catch (\Throwable $th) {
+            return view('blogs::public.home.index');
+        }
     }
 
     /**

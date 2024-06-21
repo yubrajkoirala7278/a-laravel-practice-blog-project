@@ -368,9 +368,15 @@
 
     {{-- ckeditor --}}
     <script>
-        ClassicEditor.create(document.querySelector('#blog-content'))
+        ClassicEditor
+            .create(document.querySelector('#blog-content'), {
+              removePlugins: [ 'Image','ImageCaption','ImageStyle','ImageToolbar','ImageUpload','Indent','ImageUpload','MediaEmbed'],
+            })
+            .then(editor => {
+                console.log('Available plugins:', ClassicEditor.builtinPlugins.map(plugin => plugin.pluginName));
+            })
             .catch(error => {
-                console.error(error);
+                console.error(error.stack);
             });
     </script>
 

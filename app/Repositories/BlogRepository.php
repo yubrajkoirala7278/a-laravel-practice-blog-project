@@ -9,9 +9,20 @@ use Modules\Blogs\Entities\Blog;
 class BlogRepository implements BlogRepositoryInterface
 {
 
-    public function fetchService()
+    public function fetchService($request,$paginate=-1)
     {
-        $blogs = Blog::latest()->get();
+        $query = Blog::query();
+        if($paginate!=-1){
+            if ($request->has('search')) {
+                $search = $request->input('search');
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%");
+            }
+
+            $blogs = $query->latest()->paginate(5);
+            return $blogs;
+        }
+        $blogs = $query->latest()->get();
         return $blogs;
     }
 

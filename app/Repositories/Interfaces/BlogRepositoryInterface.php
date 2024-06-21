@@ -3,7 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 Interface BlogRepositoryInterface{
-    public function fetchService();
+    public function fetchService($request);
     public function store($request);
     public function destroy($blog);
     public function show($slug);
