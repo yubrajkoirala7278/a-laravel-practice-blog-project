@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Repositories\Interfaces\BlogRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Modules\Blogs\Entities\Blog;
 
@@ -11,18 +12,21 @@ class BlogRepository implements BlogRepositoryInterface
 
     public function fetchService($request,$paginate=-1)
     {
-        $query = Blog::query();
-        if($paginate!=-1){
-            if ($request->has('search')) {
-                $search = $request->input('search');
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('slug', 'like', "%{$search}%");
-            }
-
-            $blogs = $query->latest()->paginate(5);
-            return $blogs;
+        $query = Blog::with('user');
+        if($request->has('action') && $request->action=="searchBlogs"){
+            return $this->fetchBlogs($request,$query,$paginate);
         }
         $blogs = $query->latest()->get();
+        return $blogs;
+    }
+
+    protected function fetchBlogs($request,$query,$paginate){
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('slug', 'like', "%{$search}%");
+        }
+        $blogs = $query->latest()->paginate($paginate);
         return $blogs;
     }
 
@@ -38,6 +42,7 @@ class BlogRepository implements BlogRepositoryInterface
             // update the image name in the $request array
             $request['image'] = $imageName;
         };
+        $request['user_id']=Auth::user()->id;
         Blog::create($request);
     }
 
@@ -68,6 +73,7 @@ class BlogRepository implements BlogRepositoryInterface
             // Update the image name in the $request array
             $request['image'] = $imageName;
         } 
+        $request['user_id']=Auth::user()->id;
         // update in db
         $blog->update($request);
     }

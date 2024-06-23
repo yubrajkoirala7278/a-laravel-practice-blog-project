@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->longText('description');
             $table->string('image');
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            
             $table->boolean('is_published')->default(true);
             $table->timestamps();
         });

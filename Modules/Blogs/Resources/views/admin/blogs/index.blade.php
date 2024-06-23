@@ -17,6 +17,7 @@
                         <th>S.No</th>
                         <th>Title</th>
                         <th>Slug</th>
+                        <th>Author</th>
                         <th>Description</th>
                         <th>Image</th>
                         <th>Action</th>
@@ -66,6 +67,7 @@
                         data: 'slug',
                         name: 'slug'
                     },
+                    { data: 'user.name', name: 'user.name' }, 
                     {
                         data: 'description',
                         name: 'description',

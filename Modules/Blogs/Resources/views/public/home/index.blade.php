@@ -43,7 +43,8 @@
                     url: '{{ route('home') }}',
                     data: {
                         page: page,
-                        search: search
+                        search: search,
+                        action:'searchBlogs',
                     },
                     success: function(data) {
                         $('#blogCardsContainer').empty();
