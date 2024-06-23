@@ -18,8 +18,10 @@ require __DIR__.'/public.php';
 // ======================
 
 // =======backend=======
-Route::prefix('admin')->group(function(){
-    require __DIR__.'/admin.php';
+Route::middleware(['auth.admin'])->group(function(){
+    Route::prefix('admin')->group(function(){
+        require __DIR__.'/admin.php';
+    });
 });
 // =====================
 
