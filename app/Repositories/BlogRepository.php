@@ -43,7 +43,8 @@ class BlogRepository implements BlogRepositoryInterface
             $request['image'] = $imageName;
         };
         $request['user_id']=Auth::user()->id;
-        Blog::create($request);
+        $blog=Blog::create($request);
+        return $blog;
     }
 
     public function destroy($blog)
