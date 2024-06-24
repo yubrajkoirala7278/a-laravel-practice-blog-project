@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\BlogCreated;
+use App\Events\ContactFormSubmitted;
 use App\Listeners\NotifyUser;
+use App\Listeners\SendContactFormEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         BlogCreated::class=>[
             NotifyUser::class
+        ],
+        ContactFormSubmitted::class=>[
+            SendContactFormEmail::class
         ]
     ];
 

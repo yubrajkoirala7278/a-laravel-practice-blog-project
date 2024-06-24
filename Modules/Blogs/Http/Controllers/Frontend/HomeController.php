@@ -2,6 +2,9 @@
 
 namespace Modules\Blogs\Http\Controllers\Frontend;
 
+use App\Events\ContactFormSubmitted;
+use App\Http\Requests\ContactRequest;
+use App\Models\Contact;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -21,17 +24,24 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         try {
-            if($request->ajax()){
-                $blogs=$this->blogRepository->fetchService($request,5);
+            if ($request->ajax()) {
+                $blogs = $this->blogRepository->fetchService($request, 5);
                 return response()->json($blogs);
             }
             return view('blogs::public.home.index');
-
         } catch (\Throwable $th) {
             return view('blogs::public.home.index');
         }
+    }
+
+    public function submit(ContactRequest $request)
+    {
+        $contactInfo = Contact::create($request->validated());
+        event(new ContactFormSubmitted($contactInfo));
+
+        return response()->json(['success' => 'Message Sent Successfully!']);
     }
 
     /**
