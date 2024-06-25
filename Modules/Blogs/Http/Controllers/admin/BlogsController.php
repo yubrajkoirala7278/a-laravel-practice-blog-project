@@ -3,6 +3,7 @@
 namespace Modules\Blogs\Http\Controllers\admin;
 
 use App\Events\BlogCreated;
+use App\Events\TestNotification;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -64,7 +65,7 @@ class BlogsController extends Controller
         try {
             $dataToStore = $request->only('title', 'slug', 'description', 'image', 'is_published');
             $blog = $this->blogRepository->store($dataToStore);
-            $data = ['title' => $blog['title'], 'author' => auth()->user()->name, 'email' => auth()->user()->email];
+            $data = ['subject'=>'Blog has been added','title' => $blog['title'], 'author' => auth()->user()->name, 'email' => auth()->user()->email];
             event(new BlogCreated($data));
             return redirect()->route('admin.blog')->with('success', 'Blog added successfully');
         } catch (\Throwable $th) {

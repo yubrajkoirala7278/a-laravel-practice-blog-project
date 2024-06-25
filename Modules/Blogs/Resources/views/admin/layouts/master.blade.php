@@ -38,6 +38,9 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    {{-- ==== pusher ==== --}}
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    {{-- ==================== --}}
 
 
     <!-- Customm css -->
@@ -169,7 +172,8 @@
 
                         <li class="message-item">
                             <a href="#">
-                                <img src="{{ asset('admin/assets/img/messages-1.jpg') }}" alt="" class="rounded-circle">
+                                <img src="{{ asset('admin/assets/img/messages-1.jpg') }}" alt=""
+                                    class="rounded-circle">
                                 <div>
                                     <h4>Maria Hudson</h4>
                                     <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -183,7 +187,8 @@
 
                         <li class="message-item">
                             <a href="#">
-                                <img src="{{ asset('admin/assets/img/messages-1.jpg') }}" alt="" class="rounded-circle">
+                                <img src="{{ asset('admin/assets/img/messages-1.jpg') }}" alt=""
+                                    class="rounded-circle">
                                 <div>
                                     <h4>Anna Nelson</h4>
                                     <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -197,7 +202,8 @@
 
                         <li class="message-item">
                             <a href="#">
-                                <img src="{{ asset('admin/assets/img/messages-1.jpg') }}" alt="" class="rounded-circle">
+                                <img src="{{ asset('admin/assets/img/messages-1.jpg') }}" alt=""
+                                    class="rounded-circle">
                                 <div>
                                     <h4>David Muldon</h4>
                                     <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
@@ -219,8 +225,10 @@
 
                 <li class="nav-item dropdown pe-3">
 
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="{{ asset('admin/assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
+                        data-bs-toggle="dropdown">
+                        <img src="{{ asset('admin/assets/img/profile-img.jpg') }}" alt="Profile"
+                            class="rounded-circle">
                         <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
                     </a><!-- End Profile Iamge Icon -->
 
@@ -298,7 +306,15 @@
             </li><!-- End Dashboard Nav -->
 
             <li class="nav-item">
-                <a class=" nav-link collapsed" href="{{ route('logout') }}" onclick="event.preventDefault();
+                <a class="nav-link collapsed" href="">
+                    <i class="fa-solid fa-newspaper"></i>
+                    <span>News</span>
+                </a>
+            </li><!-- End Dashboard Nav -->
+
+            <li class="nav-item">
+                <a class=" nav-link collapsed" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     <span>{{ __('Logout') }}</span>
@@ -349,9 +365,9 @@
 
     {{-- display success message --}}
     @if (session('success'))
-    <script>
-        toastify().success("{{ session('success') }}");
-    </script>
+        <script>
+            toastify().success("{{ session('success') }}");
+        </script>
     @endif
 
     {{-- generate slug --}}
@@ -365,18 +381,20 @@
         }
     </script>
 
-    {{-- ckeditor --}}
+    {{-- pusher --}}
     <script>
-        ClassicEditor
-            .create(document.querySelector('#blog-content'), {
-              removePlugins: [ 'Image','ImageCaption','ImageStyle','ImageToolbar','ImageUpload','Indent','ImageUpload','MediaEmbed'],
-            })
-            .then(editor => {
-                console.log('Available plugins:', ClassicEditor.builtinPlugins.map(plugin => plugin.pluginName));
-            })
-            .catch(error => {
-                console.error(error.stack);
-            });
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('aa0cad2629660de0e17f', {
+            cluster: 'mt1'
+        });
+
+        var channel = pusher.subscribe('my-channel');
+        channel.bind('form-submitted', function(data) {
+            console.log(data);
+            toastify().success(`${data.blog.subject} by ${data.blog.author}`);
+        });
     </script>
 
 </body>
