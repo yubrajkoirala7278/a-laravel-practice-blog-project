@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Repositories\BlogRepository;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Paginator::useBootstrapFive();
     }
 }

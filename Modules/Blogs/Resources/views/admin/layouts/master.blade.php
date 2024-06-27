@@ -306,7 +306,7 @@
             </li><!-- End Dashboard Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="">
+                <a class="nav-link collapsed" href="{{route('admin.news')}}">
                     <i class="fa-solid fa-newspaper"></i>
                     <span>News</span>
                 </a>
@@ -369,17 +369,6 @@
             toastify().success("{{ session('success') }}");
         </script>
     @endif
-
-    {{-- generate slug --}}
-    <script>
-        function generateSlug() {
-            const a = document.getElementById("title").value.trim().replace(/\s+/g, " ");;
-            const b = a.toLowerCase().replace(/ /g, '-')
-                .replace(/[^\w-]+/g, '');
-            document.getElementById("slug").value = b;
-            document.getElementById("slug").innerHTML = b;
-        }
-    </script>
 
     {{-- pusher --}}
     <script>
