@@ -24,9 +24,9 @@
                         <input type="file" class="form-control" multiple wire:model="images">
                         @error('images') <span class="error text-danger">{{ $message }}</span> @enderror
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3" wire:ignore>
                         <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" placeholder="Description" id="description" wire:model="description"></textarea>
+                        <textarea class="form-control" id="news-content" placeholder="Enter the Description" rows="5" wire:model="description"></textarea>
                         @error('description') <span class="error text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-3">

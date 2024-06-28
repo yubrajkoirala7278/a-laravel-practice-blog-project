@@ -26,7 +26,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" placeholder="Description" id="description" wire:model="description"></textarea>
+                        <textarea class="form-control"  rows="5" wire:model="description"></textarea>
                         @error('description') <span class="error text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-3">

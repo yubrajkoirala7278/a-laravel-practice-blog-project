@@ -34,7 +34,7 @@
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="blog-content" placeholder="Enter the Description" rows="5"  name="description">{{old('description',$blog->description)}}</textarea>
+                <textarea class="form-control" id="description-content" placeholder="Enter the Description" rows="5"  name="description">{{old('description',$blog->description)}}</textarea>
                 @error('description')
                     <div class="error text-sm text-danger">{{ $message }}</div>
                 @enderror
@@ -72,7 +72,7 @@
   {{-- ckeditor --}}
   <script>
     ClassicEditor
-        .create(document.querySelector('#blog-content'), {
+        .create(document.querySelector('#description-content'), {
           removePlugins: [ 'Image','ImageCaption','ImageStyle','ImageToolbar','ImageUpload','Indent','ImageUpload','MediaEmbed'],
         })
         .then(editor => {

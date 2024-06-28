@@ -2,6 +2,7 @@
 @section('content')
 {{-- =========Blogs Section============ --}}
 <div class="container mt-5">
+    <h2 class="text-success fw-semibold mb-3 text-center">Blogs</h2>
     <div class="row mb-3">
         <div class="col-md-6">
             <input type="text" id="searchTitleSlug" class="form-control" placeholder="Search by Title or Slug">

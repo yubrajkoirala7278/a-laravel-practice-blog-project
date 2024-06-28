@@ -14,7 +14,7 @@
         </div>
         {{-- search news --}}
         <input type="text" placeholder="Search News..." class="form-control my-2 w-25" wire:model.live="search">
-        
+
         <table class="table mt-4">
             <thead>
                 <tr>
@@ -34,7 +34,8 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $item->title }}</td>
                             <td>{{ $item->slug }}</td>
-                            <td>{{ $item->description }}</td>
+                            <td>{!!Str::of($item->description)->limit(20)!!}
+                            </td>
                             <td>
                                 @if ($item->status)
                                     <span class="badge text-bg-success">Published</span>
@@ -46,15 +47,18 @@
                                 <div class="d-flex align-items-center" style="gap: 5px">
                                     @foreach ($item->images as $image)
                                         <img src="{{ asset('storage/images/news/' . $image->images) }}"
-                                            alt="{{ $image->images }}" style="height: 20px">
+                                            alt="{{ $image->images }}" style="height: 20px" loading="lazy">
                                     @endforeach
                                 </div>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-transparent p-0 me-2" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-transparent p-0" data-bs-toggle="modal"
                                     data-bs-target="#editNews" wire:click="edit({{ $item->id }})">
                                     <i class="fa-solid fa-pencil text-warning fs-5"></i>
                                 </button>
+                                <a href="{{ route('news.view', ['id' => $item->id]) }}" class="mx-2 p-0 text-decoration-none">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
                                 <button class="btn btn-transparent p-0"
                                     wire:confirm="Are you sure you want to delete this post?"
                                     wire:click="delete({{ $item->id }})"><i
@@ -72,7 +76,7 @@
         </table>
     </div>
     <div class="d-flex justify-content-end mt-3">
-        {{ $news->links() }}
+        {{ $news->links('livewire.pagination') }}
     </div>
 @endsection
 

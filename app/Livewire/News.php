@@ -15,7 +15,6 @@ class News extends Component
     use WithFileUploads;
     use WithPagination;
 
-
     // ========properties=======
     public $title, $slug, $images = [], $description, $status = 1, $user_id, $news_id = null;
 
@@ -59,7 +58,10 @@ class News extends Component
 
     // =========load page===========
     public $search = '';
-
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
     public function render()
     {
         $news = ModelsNews::with('images', 'user')
