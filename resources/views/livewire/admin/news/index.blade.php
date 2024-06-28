@@ -12,6 +12,9 @@
                 Add News
             </button>
         </div>
+        {{-- search news --}}
+        <input type="text" placeholder="Search News..." class="form-control my-2 w-25" wire:model.live="search">
+        
         <table class="table mt-4">
             <thead>
                 <tr>
@@ -69,7 +72,7 @@
         </table>
     </div>
     <div class="d-flex justify-content-end mt-3">
-        {{ $news->links('livewire.pagination') }}
+        {{ $news->links() }}
     </div>
 @endsection
 

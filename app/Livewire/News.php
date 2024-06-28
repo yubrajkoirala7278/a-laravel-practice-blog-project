@@ -58,9 +58,15 @@ class News extends Component
 
 
     // =========load page===========
+    public $search = '';
+
     public function render()
     {
-        $news = ModelsNews::with('images', 'user')->latest()->paginate(10);
+        $news = ModelsNews::with('images', 'user')
+            ->where('title', 'like', '%' . $this->search . '%')
+            ->latest()
+            ->paginate(10);
+
         return view('livewire.news', [
             'news' => $news,
         ]);
