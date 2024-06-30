@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SmsTwilioController;
 use App\Livewire\News;
 use App\Livewire\NewsList;
 use App\Livewire\NewsView;
@@ -18,3 +19,6 @@ Route::middleware(['auth.admin'])->group(function () {
 });
 // frontend livewire
 Route::get('/news', NewsList::class)->name('news.list');
+
+// twilio sending sms
+Route::get('sms/send', [SmsTwilioController::class, 'sendSms']);

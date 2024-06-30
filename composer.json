@@ -15,6 +15,7 @@
         "nwidart/laravel-modules": "10.0",
         "pusher/pusher-php-server": "^7.2",
         "redot/laravel-toastify": "^1.0",
+        "twilio/sdk": "^8.2",
         "yajra/laravel-datatables-oracle": "^10.11"
     },
     "require-dev": {
