@@ -313,6 +313,13 @@
             </li><!-- End Dashboard Nav -->
 
             <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('users.index')}}">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Users</span>
+                </a>
+            </li><!-- End Dashboard Nav -->
+
+            <li class="nav-item">
                 <a class=" nav-link collapsed" href="{{ route('logout') }}"
                     onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

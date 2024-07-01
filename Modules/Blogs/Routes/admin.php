@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Blogs\Http\Controllers\admin\BlogsController;
 use Modules\Blogs\Http\Controllers\admin\HomeController;
+use Modules\Blogs\Http\Controllers\admin\UserController;
 
 Route::get('/home', [HomeController::class, 'index'])->name('admin.home');
 
@@ -17,3 +18,7 @@ Route::controller(BlogsController::class)->group(function () {
     Route::put('/blog/update/{blog}', 'update')->name('admin.blogs.update');
 });
 // ======end of  blogs=========
+
+Route::resources([
+    'users'=>UserController::class,
+]);
