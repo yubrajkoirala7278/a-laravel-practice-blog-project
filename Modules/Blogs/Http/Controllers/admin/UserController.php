@@ -8,6 +8,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -19,7 +20,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try {
-            if($request->ajax()){
+            if ($request->ajax()) {
                 $users = User::latest();
                 return DataTables::of($users)
                     ->addIndexColumn()
@@ -31,7 +32,6 @@ class UserController extends Controller
                     ->make(true);
             }
             return view('blogs::admin.users.index');
-           
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -54,10 +54,20 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
+            // store single image in local storage folder
+            if (isset($request['image'])) {
+                $timestamp = now()->timestamp;
+                $originalName = $request['image']->getClientOriginalName();
+                $imageName = $timestamp . '-' . $originalName;
+
+                $request['image']->storeAs('public/images/users', $imageName);
+            };
+            // store into db
             User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'image' => $imageName
             ]);
             return response()->json([
                 'success' => 'User added successfully'
@@ -75,7 +85,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        dd($id);    
+        dd($id);
     }
 
     /**
@@ -101,10 +111,28 @@ class UserController extends Controller
      * @param int $id
      * @return Renderable
      */
-    public function update(UserRequest $request,User $user)
+    public function update(UserRequest $request, User $user)
     {
         try {
-           $user->update($request->validated());
+            // Check if a new image is uploaded
+            if (isset($request['image'])) {
+                // Delete the old image from storage folder
+                Storage::delete('public/images/users/' . $user->image);
+                // Store the new image
+                $timestamp = now()->timestamp;
+                $originalName = $request['image']->getClientOriginalName();
+                $imageName = $timestamp . '-' . $originalName;
+                $request['image']->storeAs('public/images/users', $imageName);
+                // Update the image name in the $request array
+                $request['image'] = $imageName;
+                $user->update([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'image' => $imageName
+                ]);
+            } else {
+                $user->update($request);
+            }
             if (!$user) {
                 abort(404);
             }
@@ -123,16 +151,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        try{
+        try {
             if (!$user) {
                 abort(404);
             }
+            Storage::delete('public/images/users/' . $user->image);
             $user->delete();
             return response()->json([
                 'success' => 'user Deleted Successfully'
             ], 201);
-        }catch(\Throwable $th){
-            return back()->with('error',$th->getMessage());
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
         }
     }
 }

@@ -24,6 +24,7 @@
                     <th>S.No</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Image</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -48,24 +49,26 @@
             });
 
             // =============Call function when MODAL CLOSED for CREATE FORM============//
+            function clearErrorMsg() {
+                var errorFields = ['nameError', 'emailError', 'passwordError', 'confirm_passwordError',
+                    'imageError'
+                ];
+                errorFields.forEach(function(field) {
+                    $('#' + field).html('');
+                });
+            }
+
+
             $('#addUser').on('hidden.bs.modal', function() {
                 // setting empty text on error message
-                $('#nameError').html('');
-                $('#emailError').html('');
-                $('#passwordError').html('');
-                $('#confirm_passwordError').html('');
-            });
+                clearErrorMsg();
 
+            });
 
             // ========ADDING DATA TO DB(POST)=============//
             var createFormData = $('#ajaxForm')[0];
             $('#saveBtn').click(function() {
-
-                // setting empty text on error message
-                $('#nameError').html('');
-                $('#emailError').html('');
-                $('#passwordError').html('');
-                $('#confirm_passwordError').html('');
+                clearErrorMsg();
                 // getting form data
                 var formData = new FormData(createFormData);
                 // console.log(formData);
@@ -90,18 +93,11 @@
                         // display error message in toastify
                         // toastify().success(error.responseJSON.error);
                         let errorMessage = error.responseJSON.errors;
+
                         // displaying error message below input field
-                        if (errorMessage.name) {
-                            $('#nameError').html(errorMessage.name[0]);
-                        }
-                        if (errorMessage.email) {
-                            $('#emailError').html(errorMessage.email[0]);
-                        }
-                        if (errorMessage.password) {
-                            $('#passwordError').html(errorMessage.password[0]);
-                        }
-                        if (errorMessage.confirm_password) {
-                            $('#confirm_passwordError').html(errorMessage.confirm_password[0]);
+                        for (let key in errorMessage) {
+                            let fieldError = '#' + key + 'Error';
+                            $(fieldError).html(errorMessage[key][0]);
                         }
                     }
                 });
@@ -133,6 +129,14 @@
                     {
                         data: 'email',
                         name: 'email'
+                    },
+                    {
+                        data: "image",
+                        name: "image",
+                        "render": function(data, type, full, meta) {
+                            return '<img src="{{ asset('storage/images/users/') }}/' + data +
+                                '" alt="Image" style="height:20px">';
+                        }
                     },
                     {
                         data: 'action',
@@ -182,10 +186,10 @@
             // =====UPDATING User TO DB(UPDATE/PUT)===========================//
             var updateFormData = $('#ajaxFormUpdate')[0];
             $('#updateBtn').click(function() {
-                console.log(id);
                 // setting empty text on error message
                 $('#nameUpdateError').html('');
                 $('#emailUpdateError').html('');
+                $('#imageUpdateError').html('');
                 // getting form data
                 var formUpdateData = new FormData(updateFormData);
                 // console.log(formData);
@@ -214,12 +218,10 @@
                         // console.log(errorMessage);
 
                         // displaying error message
-                        if (errorMessage.name) {
-                            $('#nameUpdateError').html(errorMessage.name[0]);
-
-                        }
-                        if (errorMessage.email) {
-                            $('#emailUpdateError').html(errorMessage.email[0]);
+                        for (let key in errorMessage) {
+                            if (errorFields[key]) {
+                                $(errorFields[key]).html(errorMessage[key][0]);
+                            }
                         }
                     }
                 });
@@ -227,8 +229,8 @@
             // ======================================================================//
 
 
-             // ================DELETE User==============================//
-         $('body').on('click', '.delButton', function() {
+            // ================DELETE User==============================//
+            $('body').on('click', '.delButton', function() {
                 let id = $(this).data('id');
                 if (confirm('Are you sure you want to delete it')) {
                     $.ajax({
@@ -246,17 +248,17 @@
                     });
                 }
             });
-        // =====================================================================//
+            // =====================================================================//
 
-         // ===========Call function when MODAL CLOSED for UPDATE FORM=========//
-         $('#editUser').on('hidden.bs.modal', function() {
-            // setting empty text on error message
-            $('#nameUpdateError').html('');
-            $('#emailUpdateError').html('');
-        });
+            // ===========Call function when MODAL CLOSED for UPDATE FORM=========//
+            $('#editUser').on('hidden.bs.modal', function() {
+                // setting empty text on error message
+                $('#nameUpdateError').html('');
+                $('#emailUpdateError').html('');
+            });
 
 
-        // ================DELETE BLOG==============================//
+            // ================DELETE BLOG==============================//
 
         });
     </script>

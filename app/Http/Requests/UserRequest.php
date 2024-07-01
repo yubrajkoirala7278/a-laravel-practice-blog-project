@@ -27,11 +27,13 @@ class UserRequest extends FormRequest
                 'email'=>['required'],
                 'password'=>['required'],
                 'confirm_password'=>['required'],
+                'image'=>['sometimes','mimes:png,jpg,jpeg,webp']
             ];
         }else{
             return [
                 'name'=>['required'],
                 'email'=>['required'],
+                'image'=>['sometimes','mimes:png,jpg,jpeg,webp']
             ];
         }
         

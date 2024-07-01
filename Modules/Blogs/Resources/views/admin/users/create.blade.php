@@ -34,6 +34,12 @@
                         <input type="password" class="form-control" id="confirm_password" name="confirm_password">
                         <span id="confirm_passwordError" class="text-danger"></span>
                     </div>
+                    {{-- image --}}
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Upload Profile</label>
+                        <input type="file" class="form-control" id="image" name="image">
+                        <span id="imageError" class="text-danger"></span>
+                    </div>
 
 
                 </div>
