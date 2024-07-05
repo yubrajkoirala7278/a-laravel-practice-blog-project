@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -13,11 +14,10 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-       $roles=['super_admin','admin','blog_manager','news_manager'];
-       foreach ($roles as $key => $role) {
-       Role::create([
-        'name'=>$role
-       ]);
-       }
+        $role = Role::create([
+            'name' => 'super_admin'
+        ]);
+        $permissions=Permission::pluck('name')->toArray();
+        $role->syncPermissions($permissions);
     }
 }

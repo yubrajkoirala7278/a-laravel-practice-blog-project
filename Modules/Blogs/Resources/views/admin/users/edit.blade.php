@@ -32,7 +32,6 @@
                         <input type="file" class="form-control" id="image" name="image">
                         <span id="imageUpdateError" class="text-danger"></span>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

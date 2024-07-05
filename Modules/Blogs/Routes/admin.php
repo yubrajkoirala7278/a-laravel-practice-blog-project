@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Blogs\Http\Controllers\admin\BlogsController;
 use Modules\Blogs\Http\Controllers\admin\HomeController;
+use Modules\Blogs\Http\Controllers\admin\RoleController;
 use Modules\Blogs\Http\Controllers\admin\UserController;
 
 Route::get('/home', [HomeController::class, 'index'])->name('admin.home');
@@ -21,4 +22,8 @@ Route::controller(BlogsController::class)->group(function () {
 
 Route::resources([
     'users'=>UserController::class,
+    'roles'=>RoleController::class,
 ]);
+
+Route::get('/roles/{roleId}/give-permission',[RoleController::class,'addPermissionToRole'])->name('add.permissions.to.role');
+Route::post('/roles/{roleId}/give-permission',[RoleController::class,'givePermissionToRole'])->name('give.permission.to.role');

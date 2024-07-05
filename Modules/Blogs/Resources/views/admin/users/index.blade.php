@@ -25,6 +25,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Image</th>
+                    <th>Role</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -134,9 +135,18 @@
                         data: "image",
                         name: "image",
                         "render": function(data, type, full, meta) {
+                        if(data){
                             return '<img src="{{ asset('storage/images/users/') }}/' + data +
-                                '" alt="Image" style="height:20px">';
+                            '" alt="Image" style="height:20px">';
+                        }else{
+                            return '<img src=" https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQABqQIdskCD9BK0I81EbVfV9tTz320XvJ35A&s" alt="Image" style="height:20px">';
                         }
+                            
+                        }
+                    },
+                    {
+                        data: 'role',
+                        name: 'role',
                     },
                     {
                         data: 'action',

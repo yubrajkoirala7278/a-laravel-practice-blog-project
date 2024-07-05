@@ -3,7 +3,6 @@
 namespace Modules\Blogs\Http\Controllers\admin;
 
 use App\Events\BlogCreated;
-use App\Events\TestNotification;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -18,6 +17,10 @@ class BlogsController extends Controller
     public function __construct(BlogRepositoryInterface $blogRepository)
     {
         $this->blogRepository = $blogRepository;
+        $this->middleware(['permission:edit_blogs'])->only(['edit', 'update']);
+        $this->middleware(['permission:delete_blogs'])->only(['destroy']);
+        $this->middleware(['permission:show_blogs'])->only(['index','show']);
+        $this->middleware(['permission:create_blogs'])->only(['create','store']);
     }
     /**
      * Display a listing of the resource.

@@ -3,6 +3,7 @@
 namespace Modules\Blogs\Http\Controllers\admin;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -13,6 +14,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+    public function __construct() {
+        $this->middleware(['permission:edit_users'])->only(['edit', 'update']);
+        $this->middleware(['permission:delete_users'])->only(['destroy']);
+        $this->middleware(['permission:show_users'])->only(['index','show']);
+        $this->middleware(['permission:create_users'])->only(['create','store']);
+    }
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -24,14 +31,19 @@ class UserController extends Controller
                 $users = User::latest();
                 return DataTables::of($users)
                     ->addIndexColumn()
+                    ->addColumn('role', function ($row) {
+                        $role = $row->getRoleNames();
+                        return '<span class="badge text-bg-success">' . $role[0] . '</span>';
+                    })
                     ->addColumn('action', function ($row) {
                         return '<a href="javascript:void(0)" class="btn btn-info editButton" data-id="' . $row->id . '">Edit</a> 
                         <a href="javascript:void(0)" class="btn btn-danger delButton" data-id="' . $row->id . '">Delete</a> ';
                     })
-                    ->rawColumns(['action'])
+                    ->rawColumns(['role', 'action'])
                     ->make(true);
             }
-            return view('blogs::admin.users.index');
+            $roles = Role::pluck('name', 'name')->all();
+            return view('blogs::admin.users.index', compact('roles'));
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
@@ -63,12 +75,13 @@ class UserController extends Controller
                 $request['image']->storeAs('public/images/users', $imageName);
             };
             // store into db
-            User::create([
+            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'image' => $imageName
             ]);
+            $user->syncRoles($request->role);
             return response()->json([
                 'success' => 'User added successfully'
             ]);
@@ -131,7 +144,10 @@ class UserController extends Controller
                     'image' => $imageName
                 ]);
             } else {
-                $user->update($request);
+                $user->update([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                ]);
             }
             if (!$user) {
                 abort(404);

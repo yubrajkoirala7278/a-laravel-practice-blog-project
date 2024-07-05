@@ -299,6 +299,13 @@
             </li><!-- End Dashboard Nav -->
 
             <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('roles.index') }}">
+                    <i class="fa-solid fa-dice-d6"></i>
+                    <span>Roles</span>
+                </a>
+            </li><!-- End Dashboard Nav -->
+
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('admin.blog') }}">
                     <i class="fa-solid fa-blog"></i>
                     <span>Blogs</span>

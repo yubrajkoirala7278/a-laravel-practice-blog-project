@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 // admin livewire
-Route::middleware(['auth.admin'])->group(function () {
-    Route::get('/admin/news', News::class)->name('admin.news');
-    Route::get('/admin/news/{id}', NewsView::class)->name('news.view');
+Route::group(['middleware'=>['role:super_admin|admin|blog_manager|news_manager']],function(){
+        Route::get('/admin/news', News::class)->name('admin.news');
+        Route::get('/admin/news/{id}', NewsView::class)->name('news.view');
 });
 // frontend livewire
 Route::get('/news', NewsList::class)->name('news.list');

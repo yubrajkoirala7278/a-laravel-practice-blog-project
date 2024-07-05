@@ -1,5 +1,6 @@
 <!-- ===========Modal to Create User=============== -->
-<div class="modal fade" id="addUser" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
+<div class="modal fade" id="addUser" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addUserLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <form id="ajaxForm">
             <div class="modal-content">
@@ -16,14 +17,14 @@
                         <input type="text" class="form-control" id="name" name="name">
                         <span id="nameError" class="text-danger"></span>
                     </div>
-                     {{-- email --}}
-                     <div class="mb-3">
+                    {{-- email --}}
+                    <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email">
                         <span id="emailError" class="text-danger"></span>
                     </div>
-                     {{-- password --}}
-                     <div class="mb-3">
+                    {{-- password --}}
+                    <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password">
                         <span id="passwordError" class="text-danger"></span>
@@ -41,6 +42,19 @@
                         <span id="imageError" class="text-danger"></span>
                     </div>
 
+                    {{-- role --}}
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select class="form-select" id="select-role" data-placeholder="Choose Role" name="role">
+                            <option selected disabled>Choose Role</option>
+                            @if (count($roles) > 0)
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role }}">{{ $role }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+
 
                 </div>
                 <div class="modal-footer">
@@ -52,4 +66,4 @@
         </form>
     </div>
 </div>
-{{--======== End of Modal to Create User===============  --}}
+{{-- ======== End of Modal to Create User===============  --}}
