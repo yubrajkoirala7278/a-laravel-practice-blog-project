@@ -44,11 +44,10 @@ class News extends Component
     // =====reset fields=======
     public function resetFields()
     {
-        $this->title = '';
-        $this->slug = '';
         $this->images = [];
-        $this->description = '';
         $this->status = 1;
+        // reset fields
+        $this->reset('title', 'slug','description');
         // this will automatically remove the validation error msg
         $this->resetErrorBag();
         // reset news_id
